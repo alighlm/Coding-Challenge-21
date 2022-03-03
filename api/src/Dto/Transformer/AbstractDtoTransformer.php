@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto\Response\Transformer;
+namespace App\Dto\Transformer;
 
-abstract class AbstractResponseDtoTransformer implements ResponseDtoTransformerInterface
+abstract class AbstractDtoTransformer implements DtoTransformerInterface
 {
     public function transformFromObjects(iterable $objects): iterable
     {

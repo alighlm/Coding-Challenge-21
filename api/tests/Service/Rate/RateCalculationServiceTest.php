@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\Service\Rate;
+namespace App\Tests\Service\Rate;
 
 use App\Application\Service\Converter\UnitConvert;
 use App\Application\Service\Rate\RateCalculationService;

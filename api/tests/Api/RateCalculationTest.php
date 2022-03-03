@@ -5,14 +5,10 @@ namespace App\Tests\Api;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 
 
-class RateCalculation extends ApiTestCase
+class RateCalculationTest extends ApiTestCase
 {
 
-    /** @test */
-    public function rate_calculation_api_test() :void
-    {
-
-        $response = static::createClient()->request('POST', '/rate', ['json' => [
+    private static $rateData = [
             'cdr' => [
                 'meterStart'=> 1204307,
                 'timestampStart'=> '2021-04-05T10:04:00Z',
@@ -24,9 +20,20 @@ class RateCalculation extends ApiTestCase
                 'time'  => 2,
                 'transaction' => 1
             ]
-        ]]);
+        ];
 
-        $this->assertResponseStatusCodeSame(201);
+    /** @test */
+    public function rate_calculation_api_test() :void
+    {
+
+        $response = static::createClient()-> request('POST', '/rate', [
+            'json' => $this::$rateData,
+            'headers' => [
+                'Accept: */*',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
         $this->assertJsonEquals([
             'overall' => 7.04,
             'components' => [
@@ -35,5 +42,20 @@ class RateCalculation extends ApiTestCase
 		        'transaction' => 1
             ]
         ]);
+    }
+
+    /** @test */
+    public function rate_calculation_api_input_json_test() :void
+    {
+
+        $response = static::createClient()-> request('POST', '/rate', [
+            'json' => [],
+            'headers' => [
+                'Accept: */*',
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(422);
+
     }
 }

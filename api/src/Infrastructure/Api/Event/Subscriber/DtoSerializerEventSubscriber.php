@@ -36,7 +36,6 @@ final class DtoSerializerEventSubscriber implements EventSubscriberInterface
 
         $dto = $this->serializer->deserialize($request->getContent(), $request->attributes->get('dto'), 'json');
         $this->validator->validate($dto);
-
         $request->attributes->set('dto', $dto);
     }
 

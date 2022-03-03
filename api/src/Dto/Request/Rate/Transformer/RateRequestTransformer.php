@@ -1,31 +1,42 @@
 <?php
 
-namespace App\Dto\Response\Rate\Transformer;
+namespace App\Dto\Request\Rate\Transformer;
 
+use App\Dto\Request\Rate\RateRequestDto;
 use App\Dto\Response\Rate\RateComponentDto;
 use App\Dto\Response\Rate\RateResponseDto;
-use App\Dto\Response\Transformer\AbstractResponseDtoTransformer;
-use App\Entity\CdrRecord\CalculatedRate;
+use App\Dto\Transformer\AbstractDtoTransformer;
+use App\Entity\CdrRecord\Cdr;
 use App\Entity\CdrRecord\CdrRecord;
+use App\Entity\CdrRecord\Rate;
 
-class RateResponseTransformer extends AbstractResponseDtoTransformer
+class RateRequestTransformer extends AbstractDtoTransformer
 {
     /**
-     * @param CalculatedRate
-     * @return RateResponseDto
+     * @param RateRequestDto
+     * @return CdrRecord
      */
-    public function transformFromObject($calculatedRate)
+    public function transformFromObject( $rateRequestDto)
     {
-        $rateDto = new RateResponseDto();
-        $rateDto->overall = $calculatedRate->getOverall();
-        $rateComponentDto = new RateComponentDto();
-        $rateComponentDto->energy = $calculatedRate->getEnergy();
-        $rateComponentDto->transaction = $calculatedRate->getTransaction();
-        $rateComponentDto->time = $calculatedRate->getTime();
+        $rate = new Rate();
+        $rate->setTransaction($rateRequestDto->rate->transaction);
+        $rate->setTime($rateRequestDto->rate->time);
+        $rate->setEnergy($rateRequestDto->rate->energy);
 
-        $rateDto->components = $rateComponentDto;
+        $cdr = new Cdr();
+        $cdr->setMeterStart($rateRequestDto->cdr->meterStart);
+        $cdr->setMeterStop($rateRequestDto->cdr->meterStop);
+        $datetimeStart = new \DateTimeImmutable($rateRequestDto->cdr->timestampStart);
+        $datetimeStop = new \DateTimeImmutable($rateRequestDto->cdr->timestampStop);
 
-        return $rateDto;
+        $cdr->setTimestampStart($datetimeStart);
+        $cdr->setTimestampStop($datetimeStop);
+
+        $cdrRecord = new CdrRecord();
+        $cdrRecord->setCdr($cdr);
+        $cdrRecord->setRate($rate);
+
+        return $cdrRecord;
 
     }
 }

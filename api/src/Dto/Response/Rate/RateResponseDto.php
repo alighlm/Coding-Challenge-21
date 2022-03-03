@@ -5,7 +5,10 @@ namespace App\Dto\Response\Rate;
 /**
  * Results of user cdr info calculation
  */
-class RateResponse
+class RateResponseDto
 {
     public float $overall ;
+    public RateComponentDto $components ;
+
+
 }

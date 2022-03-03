@@ -5,3 +5,11 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+
+book_post_publication:
+    path: /rate2
+    methods: ['POST']
+    defaults:
+        _controller: App\Controller\Rate\RateController
+
