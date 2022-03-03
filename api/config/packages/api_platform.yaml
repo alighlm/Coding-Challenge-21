@@ -15,5 +15,3 @@ api_platform:
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
     
-    formats:
-        json:     ['application/json']

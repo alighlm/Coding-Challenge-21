@@ -29,12 +29,12 @@ class RateCalculationTest extends ApiTestCase
         $response = static::createClient()-> request('POST', '/rate', [
             'json' => $this::$rateData,
             'headers' => [
-                'Accept: */*',
+                'Accept: application/json',
             ],
         ]);
 
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonEquals([
+        $this::assertResponseIsSuccessful();
+        $this::assertJsonEquals([
             'overall' => 7.04,
             'components' => [
                 'energy'=> 3.277,
@@ -51,11 +51,12 @@ class RateCalculationTest extends ApiTestCase
         $response = static::createClient()-> request('POST', '/rate', [
             'json' => [],
             'headers' => [
-                'Accept: */*',
+                'Accept: application/json',
             ],
         ]);
 
-        $this->assertResponseStatusCodeSame(422);
+
+        $this::assertResponseStatusCodeSame(422);
 
     }
 }
